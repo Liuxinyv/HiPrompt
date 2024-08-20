@@ -40,7 +40,6 @@ def parse_args():
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
     parser.add_argument("--guidance_scale_parallel", type=float, default=10.0)
     parser.add_argument("--beta", type=float, default=0.95)
-    parser.add_argument("--randomize_seed", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument('--prompt', default="Astronaut on Mars During sunset.")
     parser.add_argument(
@@ -53,11 +52,6 @@ def parse_args():
     return args
 args = parse_args()
 
-MAX_SEED = np.iinfo(np.int32).max
-def randomize_seed_fn(seed: int, randomize_seed: bool) -> int:
-    if randomize_seed:
-        seed = random.randint(0, MAX_SEED)
-    return seed
 
 def main():   
     args = parse_args()
@@ -65,10 +59,7 @@ def main():
     pipe = HiPromptSDXLPipeline.from_pretrained(model_ckpt,torch_dtype=torch.float16)
     pipe = pipe.to("cuda")
     negative_prompt = "blurry, ugly, duplicate, poorly drawn, deformed, mosaic"
-    randomize_seed=args.randomize_seed
     seed=args.seed
-    if randomize_seed:
-        seed = int(randomize_seed_fn(seed, randomize_seed))
     noise_decom=args.noise_decom
     reduction=args.reduction                                                                                                                                                    
     beta=args.beta          

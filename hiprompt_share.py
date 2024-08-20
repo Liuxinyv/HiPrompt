@@ -36,7 +36,6 @@ def parse_args():
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
     parser.add_argument("--guidance_scale_fact", type=float, default=12.0)
     parser.add_argument("--beta", type=float, default=0.9)
-    parser.add_argument("--randomize_seed", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument(
         "--logging_dir",
@@ -52,13 +51,6 @@ def parse_args():
 
     return args
 args = parse_args()
-
-MAX_SEED = np.iinfo(np.int32).max
-def randomize_seed_fn(seed: int, randomize_seed: bool) -> int:
-    if randomize_seed:
-        seed = random.randint(0, MAX_SEED)
-    return seed
-
 def main():   
     args = parse_args()
     model_ckpt = args.model_ckpt
@@ -66,10 +58,7 @@ def main():
     pipe = pipe.to("cuda")
 
     negative_prompt = "blurry, ugly, duplicate, poorly drawn, deformed, mosaic"
-    randomize_seed=args.randomize_seed
     seed=args.seed
-    if randomize_seed:
-        seed = int(randomize_seed_fn(seed, randomize_seed))
     noise_decom=args.noise_decom
     reduction=args.reduction                                                                                                                                                    
     beta=args.beta          
