@@ -27,7 +27,7 @@ python hiprompt_llava.py \
     --reduction sum \
     --view_args 2.0 2.0 \
     --views_type low_pass high_pass \
-    --guidance_scale_fact 10 \
+    --guidance_scale_fact 10.0 \
     --ngram true \
     --logging_dir ${your-logging-dir} \
 ```
