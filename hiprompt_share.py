@@ -35,8 +35,9 @@ def parse_args():
     parser.add_argument("--view_args", default=None, type=str, nargs='+', help='Args to pass to views')
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
     parser.add_argument("--guidance_scale_fact", type=float, default=12.0)
-    parser.add_argument("--beta", type=float, default=0.9)
+    parser.add_argument("--beta", type=float, default=0.95)
     parser.add_argument("--seed", type=int, default=3407)
+    parser.add_argument('--validation_prompt', default="A corgi sits on a beach chair on a beautiful beach, with palm trees behind, high details.")
     parser.add_argument(
         "--logging_dir",
         type=str,
@@ -94,7 +95,7 @@ def main():
         image_model_2 = None
         clip_tokenizer = None
     pipe.enable_model_cpu_offload()
-    prompt=args.prompt
+    prompt=args.validation_prompt
     images = pipe(prompt, negative_prompt=negative_prompt, generator=generator,
                 height=height, width=width, view_batch_size=16, stride=64,
                 num_inference_steps=steps, guidance_scale = guidance_scale,

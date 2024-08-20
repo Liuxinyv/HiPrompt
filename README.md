@@ -19,7 +19,7 @@ python hiprompt_llava.py \
     --height 4096 \
     --width 4096 \
     --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
-    --validation_prompt "A car in a garden, with a lake and Eiffel Tower." \
+    --validation_prompt "Astronaut on Mars During sunset." \
     --llava true \
     --scale true \
     --cosine_scale_3 0.8 \

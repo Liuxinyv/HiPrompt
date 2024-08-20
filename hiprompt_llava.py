@@ -41,7 +41,7 @@ def parse_args():
     parser.add_argument("--guidance_scale_parallel", type=float, default=10.0)
     parser.add_argument("--beta", type=float, default=0.95)
     parser.add_argument("--seed", type=int, default=3407)
-    parser.add_argument('--prompt', default="Astronaut on Mars During sunset.")
+    parser.add_argument('--validation_prompt', default="Astronaut on Mars During sunset.")
     parser.add_argument(
         "--logging_dir",
         type=str,
@@ -97,7 +97,7 @@ def main():
         clip_tokenizer = None
 
     pipe.enable_model_cpu_offload()
-    prompt=args.prompt
+    prompt=args.validation_prompt
     images = pipe(prompt, negative_prompt=negative_prompt, generator=generator,
                 height=height, width=width, view_batch_size=16, stride=64,
                 num_inference_steps=steps, guidance_scale = guidance_scale,
