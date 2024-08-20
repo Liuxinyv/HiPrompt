@@ -806,7 +806,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         num_inference_steps: int = 50,
         denoising_end: Optional[float] = None,
         guidance_scale: float = 5.0,
-        guidance_scale_fact: float = 12.0,
+        guidance_scale_2: float = 10.0,
         negative_prompt: Optional[Union[str, List[str]]] = None,
         negative_prompt_2: Optional[Union[str, List[str]]] = None,
         num_images_per_prompt: Optional[int] = 1,
@@ -1235,6 +1235,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
             if needs_upcasting:
                 self.vae.to(dtype=torch.float16)
         latents_share = latents.clone()
+        ref_image=image.clone()
         image = self.image_processor.postprocess(image, output_type=output_type)
         if show_image:
             plt.figure(figsize=(10, 10))
@@ -1242,7 +1243,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
             plt.axis('off')  # Turn off axis numbers and ticks
             plt.show()
         output_images.append(image[0])
-        image_save_path = os.path.join(logging_dir,sample_path[0].split('.')[0]+'_'+str(seed))
+        image_save_path = os.path.join(logging_dir,sample_path)
         if not os.path.exists(image_save_path):
             os.makedirs(image_save_path)
         image[0].save(image_save_path + "/img_1024.jpg")
@@ -1251,9 +1252,9 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         if image_lr == None:
             starting_scale = 2
         else:
-            starting_scale = 2
+            starting_scale = 1
         for current_scale_num in range(starting_scale, scale_num + 1):
-            early_start=11
+            early_start=0
             if self.lowvram:
                 latents = latents.to(device)
                 self.unet.to(device)
@@ -1293,8 +1294,8 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                     
                 prompts_part = eval_model_share(share_model,prompts_images,device) 
                 update_prompt=[]
-                for prompt_part,image_part in zip(prompts_part,prompts_images):
-                    if ngram:                                                                             
+                if ngram:
+                    for prompt_part,image_part in zip(prompts_part,prompts_images):                                                                             
                         prompt2=prompt_part
                         tokens2 = nltk.word_tokenize(prompt2)
                         tokens2 = [word for word in tokens2 if re.match(r'\w+', word)]
@@ -1331,8 +1332,8 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                         prompt2_list = prompt2.split()
                         filted_p2 = [word for word in prompt2_list if word not in [x[0] for x in low_similarity_prompts]]
                         prompt_part = ' '.join(filted_p2)
-                    update_prompt.append(prompt_part)
-                prompts_part=update_prompt
+                        update_prompt.append(prompt_part)
+                    prompts_part=update_prompt
                 prompts_part_dict = {}
                 for index, value in enumerate(prompts_part):
                     prompts_part_dict[index] = value
@@ -1468,7 +1469,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                                         inverted_preds.append(inverted_pred)
                                     noise_pred_text = torch.stack(inverted_preds)
                                     #
-                                    noise_pred = noise_pred_uncond + guidance_scale_fact * (noise_pred_text - noise_pred_uncond)
+                                    noise_pred = noise_pred_uncond + guidance_scale_2 * (noise_pred_text - noise_pred_uncond)
                              
                                     noise_pred = noise_pred.view(-1,2,noise_pred.shape[-3],noise_pred.shape[-2],noise_pred.shape[-1])
                                     if reduction == 'mean':

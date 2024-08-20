@@ -20,6 +20,7 @@ import random
 import numpy as np
 def parse_args():
     parser = argparse.ArgumentParser(description="Simple example of a inference script.")
+    parser.add_argument('--model_ckpt',default='stabilityai/stable-diffusion-xl-base-1.0')
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--share", type=bool, default=False)
     parser.add_argument("--noise_decom", type=bool, default=False)
@@ -34,14 +35,14 @@ def parse_args():
     parser.add_argument("--dataset_root", type=str, default='eval_texts')
     parser.add_argument("--view_args", default=None, type=str, nargs='+', help='Args to pass to views')
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
-    parser.add_argument("--guidance_scale_fact", type=float, default=12.0)
+    parser.add_argument("--guidance_scale_2", type=float, default=12.0)
     parser.add_argument("--beta", type=float, default=0.95)
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument('--validation_prompt', default="A corgi sits on a beach chair on a beautiful beach, with palm trees behind, high details.")
     parser.add_argument(
         "--logging_dir",
         type=str,
-        default='./outputs_4k_llava/',
+        default='./output/',
     )
     parser.add_argument(
         "--model_name_share",
@@ -55,7 +56,8 @@ args = parse_args()
 def main():   
     args = parse_args()
     model_ckpt = args.model_ckpt
-    pipe = HiPromptSDXLPipeline.from_pretrained(model_ckpt,torch_dtype=torch.float16)
+    vae = AutoencoderKL.from_pretrained("./sdxl-vae-fp16-fix", torch_dtype=torch.float16)
+    pipe = HiPromptSDXLPipeline.from_pretrained(model_ckpt, vae=vae, torch_dtype=torch.float16)
     pipe = pipe.to("cuda")
 
     negative_prompt = "blurry, ugly, duplicate, poorly drawn, deformed, mosaic"
@@ -71,6 +73,7 @@ def main():
     steps = args.steps
     scale = args.scale
     guidance_scale=args.guidance_scale
+    guidance_scale_2=args.guidance_scale_2
     logging_dir = args.logging_dir
     cosine_scale_3=args.cosine_scale_3
     ngram=args.ngram
@@ -100,21 +103,21 @@ def main():
                 height=height, width=width, view_batch_size=16, stride=64,
                 num_inference_steps=steps, guidance_scale = guidance_scale,
                 cosine_scale_1=3, cosine_scale_2=1, cosine_scale_3=cosine_scale_3, sigma=0.8, 
-                multi_decoder=True, show_image=True,
+                multi_decoder=True, show_image=True,guidance_scale_2=guidance_scale_2,
                 share=share,
                 share_model=share_model,
                 image_lr = None,
                 scale=scale,
                 beta=beta,
-                sample_path=prompt[:15],
+                sample_path=prompt[:30],
                 image_enc=image_model,
                 clip_image_processor=clip_image_processor,
                 clip_tokenizer=clip_tokenizer,
                 image_enc_2=image_model_2,
                 noise_decom=noise_decom,
                 reduction=reduction,
-                view_args=view_args,
-                views_type=views_type,
+                view_args=view_args[0],
+                views_type=views_type[0],
                 logging_dir=logging_dir,
                 seed=seed,
                 ngram=ngram

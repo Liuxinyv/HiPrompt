@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument("--llava", type=bool, default=False)
     parser.add_argument("--noise_decom", type=bool, default=False)
     parser.add_argument("--reduction", type=str, default="sum")
-    parser.add_argument("--ngram", type=bool, default=False)
+    parser.add_argument("--ngram", type=bool, default=True)
     parser.add_argument("--height", type=int, default=2048)
     parser.add_argument("--width", type=int, default=2048)
     parser.add_argument("--steps", type=int, default=50)
@@ -38,7 +38,7 @@ def parse_args():
     parser.add_argument("--dataset_root", type=str, default='eval_texts')
     parser.add_argument("--view_args", default=None, type=str, nargs='+', help='Args to pass to views')
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
-    parser.add_argument("--guidance_scale_parallel", type=float, default=10.0)
+    parser.add_argument("--guidance_scale_2", type=float, default=10.0)
     parser.add_argument("--beta", type=float, default=0.95)
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument('--validation_prompt', default="Astronaut on Mars During sunset.")
@@ -56,7 +56,8 @@ args = parse_args()
 def main():   
     args = parse_args()
     model_ckpt = args.model_ckpt
-    pipe = HiPromptSDXLPipeline.from_pretrained(model_ckpt,torch_dtype=torch.float16)
+    vae = AutoencoderKL.from_pretrained("./sdxl-vae-fp16-fix", torch_dtype=torch.float16)
+    pipe = HiPromptSDXLPipeline.from_pretrained(model_ckpt, vae=vae, torch_dtype=torch.float16)
     pipe = pipe.to("cuda")
     negative_prompt = "blurry, ugly, duplicate, poorly drawn, deformed, mosaic"
     seed=args.seed
@@ -73,6 +74,7 @@ def main():
     guidance_scale=args.guidance_scale
     logging_dir = args.logging_dir
     cosine_scale_3=args.cosine_scale_3
+    guidance_scale_2=args.guidance_scale_2
     ngram=args.ngram
     generator = torch.Generator(device='cuda')
     generator = generator.manual_seed(seed)#
@@ -102,7 +104,7 @@ def main():
                 height=height, width=width, view_batch_size=16, stride=64,
                 num_inference_steps=steps, guidance_scale = guidance_scale,
                 cosine_scale_1=3, cosine_scale_2=1, cosine_scale_3=cosine_scale_3, sigma=0.8, 
-                multi_decoder=True, show_image=True,
+                multi_decoder=True, show_image=True,guidance_scale_2=guidance_scale_2,
                 llava=llava,
                 image_lr = None,
                 scale=scale,
@@ -113,8 +115,8 @@ def main():
                 llava_image_processor = llava_image_processor,
                 noise_decom=noise_decom,
                 reduction=reduction,
-                view_args=view_args,
-                views_type=views_type,
+                view_args=view_args[0],
+                views_type=views_type[0],
                 logging_dir=logging_dir,
                 seed=seed,
                 image_enc=image_model,

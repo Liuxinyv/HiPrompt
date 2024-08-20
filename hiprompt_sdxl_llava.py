@@ -808,7 +808,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         num_inference_steps: int = 50,
         denoising_end: Optional[float] = None,
         guidance_scale: float = 5.0,
-        guidance_scale_fact: float = 12.0,
+        guidance_scale_2: float = 10.0,
         negative_prompt: Optional[Union[str, List[str]]] = None,
         negative_prompt_2: Optional[Union[str, List[str]]] = None,
         num_images_per_prompt: Optional[int] = 1,
@@ -1257,7 +1257,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         else:
             starting_scale = 2
         for current_scale_num in range(starting_scale, scale_num + 1):
-            early_stop=10
+            early_stop=0
             if self.lowvram:
                 latents = latents.to(device)
                 self.unet.to(device)
@@ -1479,7 +1479,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                                         inverted_pred = view_fact.inverse_view(pred)
                                         inverted_preds.append(inverted_pred)
                                     noise_pred_text = torch.stack(inverted_preds)
-                                    noise_pred = noise_pred_uncond + guidance_scale_fact * (noise_pred_text - noise_pred_uncond)
+                                    noise_pred = noise_pred_uncond + guidance_scale_2 * (noise_pred_text - noise_pred_uncond)
 
                                     noise_pred = noise_pred.view(-1,2,noise_pred.shape[-3],noise_pred.shape[-2],noise_pred.shape[-1])
                                     if reduction == 'mean':

@@ -1,5 +1,5 @@
 diffusers~=0.21.4
-torch~=2.1.0
+torch~=2.1.2
 scipy~=1.11.3
 omegaconf~=2.3.0
 accelerate~=0.23.0
