@@ -20,11 +20,6 @@ def parse_args():
 
 
 def auto_configure_device_map(num_gpus):
-    # visual_encoder 算4层
-    # internlm_model.model.embed_tokens 占用1层
-    # norm 和 lm_head 占用1层
-    # transformer.layers 占用 32 层
-    # 总共34层分配到num_gpus张卡上
     num_trans_layers = 32
     per_gpu_layers = 38 / num_gpus
 

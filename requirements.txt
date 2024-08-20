@@ -9,3 +9,5 @@ einops
 matplotlib
 gradio
 gradio_imageslider
+llava https://github.com/haotian-liu/LLaVA.git
+sharecaptioner git@github.com:ShareGPT4Omni/ShareGPT4V.git

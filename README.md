@@ -15,19 +15,36 @@ pip install -r requirements.txt
 
 ## 💫 Inference
 ```
-python hiprompt.py \
+python hiprompt_llava.py \
     --height 4096 \
     --width 4096 \
-    --logging_dir ${your-logging-dir} \
+    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
     --validation_prompt "a professional photograph of an astronaut riding a horse" \
     --llava true \
     --scale true \
     --cosine_scale_3 0.8 \
-    --nd true \
+    --noise_decom true \
     --reduction sum \
-    --view_args 1.0 1.0 \
+    --view_args 2.0 2.0 \
     --views_type low_pass high_pass \
     --guidance_scale_fact 10 \
-    --beta 0.95
+    --logging_dir ${your-logging-dir} \
+```
+by setting `--validation_prompt` to a prompt string or a path to your custom `.txt` file.
+```
+python hiprompt_llava.py \
+    --height 4096 \
+    --width 4096 \
+    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
+    --validation_prompt "a professional photograph of an astronaut riding a horse" \
+    --share true \
+    --scale true \
+    --cosine_scale_3 0.8 \
+    --noise_decom true \
+    --reduction sum \
+    --view_args 2.0 2.0 \
+    --views_type low_pass high_pass \
+    --guidance_scale_fact 10 \
+    --logging_dir ${your-logging-dir} \
 ```
 by setting `--validation_prompt` to a prompt string or a path to your custom `.txt` file.

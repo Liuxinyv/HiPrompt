@@ -20,27 +20,22 @@ import random
 import numpy as np
 def parse_args():
     parser = argparse.ArgumentParser(description="Simple example of a inference script.")
-    parser.add_argument("--gpu_ids", type=int,default=0)
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--share", type=bool, default=False)
-    parser.add_argument("--fact", type=bool, default=False)
+    parser.add_argument("--noise_decom", type=bool, default=False)
     parser.add_argument("--reduction", type=str, default="sum")
-    parser.add_argument("--similarity", type=bool, default=False)
     parser.add_argument("--ngram", type=bool, default=False)
-    parser.add_argument("--acc", type=bool, default=False)
     parser.add_argument("--height", type=int, default=2048)
     parser.add_argument("--width", type=int, default=2048)
     parser.add_argument("--steps", type=int, default=50)
     parser.add_argument("--scale", type=bool, default=False)
     parser.add_argument("--guidance_scale", type=float, default=7.5)
     parser.add_argument("--cosine_scale_3", type=float, default=1)
-    parser.add_argument("--gpu_num", type=int, default=6)
     parser.add_argument("--dataset_root", type=str, default='eval_texts')
     parser.add_argument("--view_args", default=None, type=str, nargs='+', help='Args to pass to views')
     parser.add_argument("--views_type", required=False, type=str, nargs='+', help='Name of views to use. See `get_views` in `views.py`.')
     parser.add_argument("--guidance_scale_fact", type=float, default=12.0)
     parser.add_argument("--beta", type=float, default=0.9)
-    parser.add_argument("--alpha", type=float, default=0.5)
     parser.add_argument("--randomize_seed", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=3407)
     parser.add_argument(
@@ -75,10 +70,9 @@ def main():
     seed=args.seed
     if randomize_seed:
         seed = int(randomize_seed_fn(seed, randomize_seed))
-    fact=args.fact
+    noise_decom=args.noise_decom
     reduction=args.reduction                                                                                                                                                    
     beta=args.beta          
-    alpha=args.alpha
     view_args=args.view_args
     views_type=args.views_type
     share = args.share
@@ -122,13 +116,12 @@ def main():
                 image_lr = None,
                 scale=scale,
                 beta=beta,
-                alpha=alpha,
                 sample_path=prompt[:15],
                 image_enc=image_model,
                 clip_image_processor=clip_image_processor,
                 clip_tokenizer=clip_tokenizer,
                 image_enc_2=image_model_2,
-                fact=fact,
+                noise_decom=noise_decom,
                 reduction=reduction,
                 view_args=view_args,
                 views_type=views_type,

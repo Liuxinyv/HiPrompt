@@ -54,6 +54,11 @@ if is_invisible_watermark_available():
 import torchvision.transforms.functional as TF
 from views import get_views as get_views_fact
 from share4v_infer import eval_model_share
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+from nltk.util import ngrams
+from nltk.corpus import stopwords
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 EXAMPLE_DOC_STRING = """
@@ -837,7 +842,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         lowvram: bool = False,
         share: bool = False,
         share_model: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
-        fact: bool = False,
+        noise_decom: bool = False,
         reduction: bool = False,
         clip_image_processor: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
         clip_tokenizer: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
@@ -850,6 +855,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
         beta: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
         logging_dir: str = None,
         seed: int=3407,
+        ngram: bool = False,
     ):
         r"""
         Function invoked when calling the pipeline for generation.
@@ -1286,49 +1292,52 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                     prompts_images.append(image_part[0])
                     
                 prompts_part = eval_model_share(share_model,prompts_images,device) 
-                if ngram:                                                                             
-                    prompt2=prompt_part
-                    tokens2 = nltk.word_tokenize(prompt2)
-                    tokens2 = [word for word in tokens2 if re.match(r'\w+', word)]
-                    uninformative_words = {'image', 'jpg', 'background', 'wallpaper', 'hd wallpaper'}
-                    grams_2 = list(ngrams(tokens2, 1))
-                    grams_2 = [ngram for ngram in grams_2 if all(word not in uninformative_words for word in ngram)]
-                    grams_2 = self.filter_ngrams(grams_2)
-                    iamge_encoders = [image_enc,image_enc_2]
-                    n_grams_probs_list=[]
-                    ref_image = self.image_processor.postprocess(ref_image, output_type=output_type)[0]
-                    ref_image = clip_image_processor(ref_image).unsqueeze(0)
-                    for grams in grams_2:
-                        text_features_gram_list=[]
-                        global_text_embeds_list=[]
-                        for filter in iamge_encoders:
-                            global_text_embeds = filter.encode_text(clip_tokenizer(prompt).to(device))
-                            global_text_embeds /= global_text_embeds.norm(dim=-1, keepdim=True)
-                            global_text_embeds_list.append(global_text_embeds)
-                            text_features_gram = filter.encode_text(clip_tokenizer(list(grams)).to(device))
-                            text_features_gram /= text_features_gram.norm(dim=-1, keepdim=True)
-                            text_features_gram_list.append(text_features_gram)
-                        text_features_gram_embeds = torch.cat(text_features_gram_list,dim=-1)
-                        global_text_feat_embeds = torch.cat(global_text_embeds_list,dim=-1)
-                    
-                        text_features_gram_embeds /= text_features_gram_embeds.norm(dim=-1, keepdim=True)
-                        global_text_feat_embeds /= global_text_feat_embeds.norm(dim=-1, keepdim=True)
-                        n_grams_probs = (100.0 * global_text_feat_embeds @ text_features_gram_embeds.T)
-                        n_grams_probs_list.append(n_grams_probs)
-                    
-                    n_grams_probs_tensor = torch.stack(n_grams_probs_list, dim=0)
-                    avg_similarity = torch.mean(n_grams_probs_tensor)
-                    low_similarity_prompts = [prompt for i, prompt in enumerate(grams_2) if n_grams_probs_list[i] < avg_similarity]
-                    
-                    prompt2_list = prompt2.split()
-                    filted_p2 = [word for word in prompt2_list if word not in [x[0] for x in low_similarity_prompts]]
-                    prompt_part = ' '.join(filted_p2)
-
+                update_prompt=[]
+                for prompt_part,image_part in zip(prompts_part,prompts_images):
+                    if ngram:                                                                             
+                        prompt2=prompt_part
+                        tokens2 = nltk.word_tokenize(prompt2)
+                        tokens2 = [word for word in tokens2 if re.match(r'\w+', word)]
+                        uninformative_words = {'image', 'jpg', 'background', 'wallpaper', 'hd wallpaper'}
+                        grams_2 = list(ngrams(tokens2, 1))
+                        grams_2 = [ngram for ngram in grams_2 if all(word not in uninformative_words for word in ngram)]
+                        grams_2 = self.filter_ngrams(grams_2)
+                        iamge_encoders = [image_enc,image_enc_2]
+                        n_grams_probs_list=[]
+                        ref_image = self.image_processor.postprocess(ref_image, output_type=output_type)[0]
+                        ref_image = clip_image_processor(ref_image).unsqueeze(0)
+                        for grams in grams_2:
+                            text_features_gram_list=[]
+                            global_text_embeds_list=[]
+                            for filter in iamge_encoders:
+                                global_text_embeds = filter.encode_text(clip_tokenizer(prompt).to(device))
+                                global_text_embeds /= global_text_embeds.norm(dim=-1, keepdim=True)
+                                global_text_embeds_list.append(global_text_embeds)
+                                text_features_gram = filter.encode_text(clip_tokenizer(list(grams)).to(device))
+                                text_features_gram /= text_features_gram.norm(dim=-1, keepdim=True)
+                                text_features_gram_list.append(text_features_gram)
+                            text_features_gram_embeds = torch.cat(text_features_gram_list,dim=-1)
+                            global_text_feat_embeds = torch.cat(global_text_embeds_list,dim=-1)
+                        
+                            text_features_gram_embeds /= text_features_gram_embeds.norm(dim=-1, keepdim=True)
+                            global_text_feat_embeds /= global_text_feat_embeds.norm(dim=-1, keepdim=True)
+                            n_grams_probs = (100.0 * global_text_feat_embeds @ text_features_gram_embeds.T)
+                            n_grams_probs_list.append(n_grams_probs)
+                        
+                        n_grams_probs_tensor = torch.stack(n_grams_probs_list, dim=0)
+                        avg_similarity = torch.mean(n_grams_probs_tensor)
+                        low_similarity_prompts = [prompt for i, prompt in enumerate(grams_2) if n_grams_probs_list[i] < avg_similarity]
+                        
+                        prompt2_list = prompt2.split()
+                        filted_p2 = [word for word in prompt2_list if word not in [x[0] for x in low_similarity_prompts]]
+                        prompt_part = ' '.join(filted_p2)
+                    update_prompt.append(prompt_part)
+                prompts_part=update_prompt
                 prompts_part_dict = {}
                 for index, value in enumerate(prompts_part):
                     prompts_part_dict[index] = value
                 output_texts[current_scale_num]=prompts_part_dict
-                if fact:
+                if noise_decom:
                     prompts_part_list = []
                     for pair in zip([prompt]*len(prompts_part),prompts_part):
                         prompts_part_list.extend(pair)
@@ -1363,7 +1372,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                 prompts_embed = torch.cat(prompts_embed, dim=0)#([36, 77, 2048])
                 prompt_attn_masks = torch.cat(prompt_attn_masks, dim=0) 
                 del negative_prompt_embed, negative_prompt_attn_mask
-            if fact:
+            if noise_decom:
                 views_type_list=[item.strip() for item in views_type.split()]
                 view_args_list=[item.strip() for item in view_args.split()]
                 views_fact = get_views_fact(views_type_list, view_args=view_args_list,beta=beta)
@@ -1401,7 +1410,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                             )
                            
                             latent_model_input = latents_for_view
-                            if fact:
+                            if noise_decom:
                                 viewed_noisy_images = []
                                 for c in range(vb_size):
                                     # Apply views to noisy_image
@@ -1416,7 +1425,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                             )
                             latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
 
-                            if fact:  
+                            if noise_decom:  
                                 prompt_embeds_input = prompts_embed[j*view_batch_size*4 : (j +1)*view_batch_size*4]
                                 add_text_embeds_input = prompt_attn_masks[j*view_batch_size*4 : (j +1)*view_batch_size*4]
                             else:       
@@ -1429,7 +1438,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
                                 add_time_ids_[:, 3] = w_start * self.vae_scale_factor
                                 add_time_ids_input.append(add_time_ids_)
                             add_time_ids_input = torch.cat(add_time_ids_input)
-                            if fact:
+                            if noise_decom:
                                 add_time_ids_input = add_time_ids_input.repeat_interleave(2, dim=0)
 
                             # predict the noise residual
@@ -1445,7 +1454,7 @@ class HiPromptSDXLPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMix
 
                             if do_classifier_free_guidance:
                                 noise_pred_uncond, noise_pred_text = noise_pred[::2], noise_pred[1::2]
-                                if fact:
+                                if noise_decom:
                                     inverted_preds = []
                                     for pred, view_fact in zip(noise_pred_uncond, views_fact*vb_size):
                                         inverted_pred = view_fact.inverse_view(pred)
