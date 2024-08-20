@@ -19,7 +19,7 @@ python hiprompt_llava.py \
     --height 4096 \
     --width 4096 \
     --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
-    --validation_prompt "a professional photograph of an astronaut riding a horse" \
+    --validation_prompt "A corgi sits on a beach chair on a beautiful beach, with palm trees behind, high details." \
     --llava true \
     --scale true \
     --cosine_scale_3 0.8 \
@@ -28,15 +28,16 @@ python hiprompt_llava.py \
     --view_args 2.0 2.0 \
     --views_type low_pass high_pass \
     --guidance_scale_fact 10 \
+    --ngram true \
     --logging_dir ${your-logging-dir} \
 ```
-by setting `--validation_prompt` to a prompt string or a path to your custom `.txt` file.
+
 ```
-python hiprompt_llava.py \
+python hiprompt_share.py \
     --height 4096 \
     --width 4096 \
     --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
-    --validation_prompt "a professional photograph of an astronaut riding a horse" \
+    --validation_prompt "A corgi sits on a beach chair on a beautiful beach, with palm trees behind, high details." \
     --share true \
     --scale true \
     --cosine_scale_3 0.8 \
@@ -44,7 +45,7 @@ python hiprompt_llava.py \
     --reduction sum \
     --view_args 2.0 2.0 \
     --views_type low_pass high_pass \
-    --guidance_scale_fact 10 \
+    --guidance_scale_fact 10.0 \
+    --ngram true \
     --logging_dir ${your-logging-dir} \
 ```
-by setting `--validation_prompt` to a prompt string or a path to your custom `.txt` file.
