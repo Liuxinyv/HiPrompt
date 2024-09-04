@@ -7,7 +7,7 @@
   <a href="https://jxbbb.github.io/">Bu Jin</a><sup>4</sup>, 
   <a href="https://github.com/Liuxinyv/HiPrompt">Peng Li</a><sup>1</sup>,
    <a href="https://github.com/Liuxinyv/HiPrompt">Yan Li</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Chi-Min Chan</a><sup>3</sup>, 
+   <a href="https://github.com/Liuxinyv/HiPrompt">Chi-Min Chan</a><sup>1</sup>, 
   <a href="https://cqf.io/">Qifeng Chen</a><sup>1</sup>,
    <a href="https://github.com/Liuxinyv/HiPrompt">Wei Xue</a><sup>1</sup>,
     <a href="https://github.com/Liuxinyv/HiPrompt">Wenhan Luo</a><sup>1</sup>,
