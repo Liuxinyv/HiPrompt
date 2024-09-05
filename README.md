@@ -21,7 +21,7 @@
 </p>
 <div align="center">
   <a href="https://liuxinyv.github.io/HiPrompt/"><img src="https://img.shields.io/static/v1?label=Project%20Page&message=Github&color=blue&logo=github-pages"></a> &ensp;
-  <a href="https://github.com/Liuxinyv/HiPrompt"><img src="https://img.shields.io/static/v1?label=Paper&message=Arxiv&color=red&logo=arxiv"></a> &ensp;
+  <a href="https://arxiv.org/abs/2409.02919"><img src="https://img.shields.io/static/v1?label=Paper&message=Arxiv&color=red&logo=arxiv"></a> &ensp;
 
 </div>
 
