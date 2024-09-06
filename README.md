@@ -1,6 +1,6 @@
 # HiPrompt: Tuning-free Higher-Resolution Generation with Hierarchical MLLM Prompts
 <p align="center">
-  <a href="https://github.com/Liuxinyv/HiPrompt">Xinyu Liu</a><sup>1</sup>,
+  <a href="https://liuxinyv.github.io/">Xinyu Liu</a><sup>1</sup>,
   <a href="https://yingqinghe.github.io/">Yingqing He</a><sup>1</sup>, 
   <a href="https://guolanqing.github.io/">Lanqing Guo</a><sup>2</sup>, 
   <a href="https://github.com/Liuxinyv/HiPrompt">Xiang Li</a><sup>3</sup>, 
