@@ -11,7 +11,7 @@
   <a href="https://cqf.io/">Qifeng Chen</a><sup>1</sup>,
    <a href="https://github.com/Liuxinyv/HiPrompt">Wei Xue</a><sup>1</sup>,
     <a href="https://github.com/Liuxinyv/HiPrompt">Wenhan Luo</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Qingfeng Liu</a><sup>1</sup>,
+   <a href="https://github.com/Liuxinyv/HiPrompt">Qifeng Liu</a><sup>1</sup>,
     <a href="https://github.com/Liuxinyv/HiPrompt">QiYike Guo</a><sup>1</sup>
   <br><br>
   <sup>1</sup>Hong Kong University of Science and Technology<br>
