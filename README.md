@@ -97,3 +97,20 @@ python hiprompt_share.py \
     --guidance_scale_2 10.0 \
     --logging_dir ${your-logging-dir} \
 ```
+## 📝 Changelog
+- __[2024.08]__: 🔥 Release paper.
+- __[2025.02]__: 🔥 Release source code.
+<br>
+
+## ⏳ TODO
+- [ ] Hugging Face Gradio demo
+
+## 😉 Citation
+```bib
+@article{liu2024hiprompt,
+  title={Hiprompt: Tuning-free higher-resolution generation with hierarchical mllm prompts},
+  author={Liu, Xinyu and He, Yingqing and Guo, Lanqing and Li, Xiang and Jin, Bu and Li, Peng and Li, Yan and Chan, Chi-Min and Chen, Qifeng and Xue, Wei and others},
+  journal={arXiv preprint arXiv:2409.02919},
+  year={2024}
+}
+```
