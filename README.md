@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ---
 
 ## 💫 Inference
-
+Lightning Version
 ```
 python hiprompt_llava.py \
     --height 4096 \
@@ -52,6 +52,19 @@ python hiprompt_llava.py \
     --guidance_scale_2 10.0 \
     --logging_dir ${your-logging-dir} \
 ```
+```
+python hiprompt_share.py \
+    --height 4096 \
+    --width 4096 \
+    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
+    --validation_prompt "A cute corgi on the lawn." \
+    --share true \
+    --scale true \
+    --cosine_scale_3 0.8 \
+    --guidance_scale_2 10.0 \
+    --logging_dir ${your-logging-dir} \
+```
+Regular Version
 ```
 python hiprompt_llava.py \
     --height 4096 \
@@ -65,19 +78,6 @@ python hiprompt_llava.py \
     --reduction sum \
     --view_args 2.0 2.0 \
     --views_type low_pass high_pass \
-    --guidance_scale_2 10.0 \
-    --logging_dir ${your-logging-dir} \
-```
-
-```
-python hiprompt_share.py \
-    --height 4096 \
-    --width 4096 \
-    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
-    --validation_prompt "A cute corgi on the lawn." \
-    --share true \
-    --scale true \
-    --cosine_scale_3 0.8 \
     --guidance_scale_2 10.0 \
     --logging_dir ${your-logging-dir} \
 ```
