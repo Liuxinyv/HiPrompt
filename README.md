@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ---
 
 ## 💫 Inference
-Without Noise Decomposition (Lightning Version)
+Without Noise Decomposition
 ```
 python hiprompt_llava.py \
     --height 4096 \
