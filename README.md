@@ -1,4 +1,29 @@
 # HiPrompt: Tuning-free Higher-Resolution Generation with Hierarchical MLLM Prompts
+<p align="center">
+  <a href="https://github.com/Liuxinyv/HiPrompt">Xinyu Liu</a><sup>1</sup>,
+  <a href="https://yingqinghe.github.io/">Yingqing He</a><sup>2</sup>, 
+  <a href="httphttps://guolanqing.github.io/">Lanqing Guo</a><sup>2</sup>, 
+  <a href="https://github.com/Liuxinyv/HiPrompt">Xiang Li</a><sup>2</sup>, 
+  <a href="htthttps://jxbbb.github.io/">Bu Jin</a><sup>3</sup>, 
+  <a href="https://github.com/Liuxinyv/HiPrompt">Peng Li</a><sup>1</sup>,
+   <a href="https://github.com/Liuxinyv/HiPrompt">Yan Li</a><sup>1</sup>,
+   <a href="https://github.com/Liuxinyv/HiPrompt">Chi-Min Chan</a><sup>3</sup>, 
+  <a href="https://cqf.io/">Qifeng Chen</a><sup>1</sup>,
+   <a href="https://github.com/Liuxinyv/HiPrompt">Wei Xue</a><sup>1</sup>,
+    <a href="https://github.com/Liuxinyv/HiPrompt">Wenhan Luo</a><sup>1</sup>,
+   <a href="https://github.com/Liuxinyv/HiPrompt">Qingfeng Liu</a><sup>1</sup>,
+    <a href="https://github.com/Liuxinyv/HiPrompt">QiYike Guo</a><sup>1</sup>
+  <br><br>
+  <sup>1</sup>Hong Kong University of Science and Technology<br>
+  <sup>2</sup>Nanyang Technological University<br>
+  <sup>3</sup>Tsinghua University<br>
+ <sup>4</sup>University of Chinese Academy of Sciences</span> <br>
+</p>
+<div align="center">
+  <a href="https://liuxinyv.github.io/HiPrompt/"><img src="https://img.shields.io/static/v1?label=Project%20Page&message=Github&color=blue&logo=github-pages"></a> &ensp;
+  <a href="https://github.com/Liuxinyv/HiPrompt"><img src="https://img.shields.io/static/v1?label=Paper&message=Arxiv&color=red&logo=arxiv"></a> &ensp;
+
+</div>
 <img src="figure/teaser.png" width="800"/>
 
 ## 🔆 Abstract
