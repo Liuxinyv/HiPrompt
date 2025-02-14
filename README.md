@@ -2,17 +2,17 @@
 <p align="center">
   <a href="https://github.com/Liuxinyv/HiPrompt">Xinyu Liu</a><sup>1</sup>,
   <a href="https://yingqinghe.github.io/">Yingqing He</a><sup>2</sup>, 
-  <a href="httphttps://guolanqing.github.io/">Lanqing Guo</a><sup>2</sup>, 
-  <a href="https://github.com/Liuxinyv/HiPrompt">Xiang Li</a><sup>2</sup>, 
-  <a href="htthttps://jxbbb.github.io/">Bu Jin</a><sup>3</sup>, 
-  <a href="https://github.com/Liuxinyv/HiPrompt">Peng Li</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Yan Li</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Chi-Min Chan</a><sup>3</sup>, 
-  <a href="https://cqf.io/">Qifeng Chen</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Wei Xue</a><sup>1</sup>,
-    <a href="https://github.com/Liuxinyv/HiPrompt">Wenhan Luo</a><sup>1</sup>,
-   <a href="https://github.com/Liuxinyv/HiPrompt">Qingfeng Liu</a><sup>1</sup>,
-    <a href="https://github.com/Liuxinyv/HiPrompt">QiYike Guo</a><sup>1</sup>
+  <a href="https://guolanqing.github.io/">Lanqing Guo</a><sup>2</sup>, 
+  <a>Xiang Li</a><sup>2</sup>, 
+  <a href="https://jxbbb.github.io/">Bu Jin</a><sup>3</sup>, 
+  <a>Peng Li</a><sup>1</sup>,
+  <a>Yan Li</a><sup>1</sup>,
+  <a>Chi-Min Chan</a><sup>3</sup>, 
+  <a>Qifeng Chen</a><sup>1</sup>,
+   <a>Wei Xue</a><sup>1</sup>,
+    <a>Wenhan Luo</a><sup>1</sup>,
+   <a>Qingfeng Liu</a><sup>1</sup>,
+    <a>QiYike Guo</a><sup>1</sup>
   <br><br>
   <sup>1</sup>Hong Kong University of Science and Technology<br>
   <sup>2</sup>Nanyang Technological University<br>
