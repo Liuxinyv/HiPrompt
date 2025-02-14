@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ---
 
 ## 💫 Inference
-Lightning Version
+Without Noise Decomposition (Lightning Version)
 ```
 python hiprompt_llava.py \
     --height 4096 \
@@ -64,7 +64,7 @@ python hiprompt_share.py \
     --guidance_scale_2 10.0 \
     --logging_dir ${your-logging-dir} \
 ```
-Regular Version
+With Noise Decomposition
 ```
 python hiprompt_llava.py \
     --height 4096 \
