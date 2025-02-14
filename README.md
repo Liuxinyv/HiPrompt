@@ -39,6 +39,19 @@ pip install -r requirements.txt
 ---
 
 ## 💫 Inference
+
+```
+python hiprompt_llava.py \
+    --height 4096 \
+    --width 4096 \
+    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
+    --validation_prompt "Astronaut on Mars During sunset." \
+    --llava true \
+    --scale true \
+    --cosine_scale_3 0.8 \
+    --guidance_scale_2 10.0 \
+    --logging_dir ${your-logging-dir} \
+```
 ```
 python hiprompt_llava.py \
     --height 4096 \
@@ -56,6 +69,18 @@ python hiprompt_llava.py \
     --logging_dir ${your-logging-dir} \
 ```
 
+```
+python hiprompt_share.py \
+    --height 4096 \
+    --width 4096 \
+    --model_ckpt="stabilityai/stable-diffusion-xl-base-1.0" \
+    --validation_prompt "A cute corgi on the lawn." \
+    --share true \
+    --scale true \
+    --cosine_scale_3 0.8 \
+    --guidance_scale_2 10.0 \
+    --logging_dir ${your-logging-dir} \
+```
 ```
 python hiprompt_share.py \
     --height 4096 \
