@@ -46,7 +46,7 @@ def load_images(image_files):
         out.append(image)
     return out
 
-def eval_model_llava(image_files,tokenizer,model,image_processor,model_name,prompt):
+def eval_model_llava(image_files, tokenizer, model, image_processor, model_name, prompt):
     # Mode
     args_conv_mode = None
     qs="Here's a formula for a Stable Diffusion image prompt: a image of [adjective] [subject] [material], [color scheme],[photo location], detailed. Answer in one sentence."
